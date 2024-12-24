@@ -1,29 +1,29 @@
-module ALUCU( input [1:0] ALUop, input [2:0] Inst1, input Inst2, output reg [3:0] ALUSelection);
+module ALUTB();
+reg [7:0] A;
+reg [7:0] B;
+reg [3:0] sel;
+wire [7:0] Y;
+wire zeroflag;
+ALU  #8 DUT ( A, B ,sel ,Y, zeroflag);
 
-always @(*) begin 
-case(ALUop)
+initial begin 
 
-2'b00:begin 
-ALUSelection = 4'b0010;
-end 
+sel = 4'b0010 ; 
+A = 7; 
+B = 4; 
+#5
 
-2'b01:begin 
-ALUSelection = 4'b0110;
-end 
+sel = 4'b0000 ; 
+#5 
+sel = 4'b0110;
+#5 
+sel =4'b0001;
+#5
+sel=4'b1111;
+#5
+sel=4'b0101;
+#5
+$finish;
+end
 
-2'b10:begin 
-if(Inst1 == 3'b000) begin
-    if(Inst2==1'b0)
-ALUSelection = 4'b0010;
-    else ALUSelection = 4'b0110;
-end 
-else if(Inst1 == 3'b111)
-    ALUSelection = 4'b0000;
-else if(Inst1 == 3'b110)
-ALUSelection = 4'b0001;
-
-end 
-endcase 
-end 
 endmodule
-
