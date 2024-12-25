@@ -1,0 +1,42 @@
+module Data_Cache_Mem_TB();
+reg clk, update, fill;
+reg [1:0] offset;
+reg [4:0] index;
+reg [31:0] data_in;
+reg [127:0] MsData_out;
+wire [31:0] data_out;
+
+    
+    
+    localparam period = 10;
+    initial begin
+        clk = 0;
+        forever #(period / 2) clk = ~clk;
+    end
+    
+    Data_Cache_Mem dut(.clk(clk), .update(update), .fill(fill), .offset(offset), .index(index), .data_in(data_in), .MsData_out(MsData_out), .data_out(data_out));
+    
+    initial begin
+        fill = 1; 
+        update = 0;
+        offset = 0;
+        index = 1;
+        MsData_out = {32'd12, 32'd14, 32'd3, 32'd5};
+        data_in = 0;
+        
+        #(4*period);
+    
+        fill = 0; 
+        update = 1;
+        offset = 1;
+        index = 1;
+        MsData_out = {32'd12, 32'd14, 32'd3, 32'd5};
+        data_in = 32'd7;
+        
+        #(4*period);
+        $finish;
+    
+    end
+
+
+endmodule
